@@ -11,22 +11,26 @@
 #define LORA_MANAGER_E32 1 
 #define LORA_MANAGER_E22 0
 
-#define LORA_FREQUENCY 900
+#define LORA_FREQUENCY_MODE 900
 
 
 // ----------------------- INCLUDES ----------------------
 #include "src/lib/config.h" 
 #include "src/lib/pinout.h"
 
-#if LORA_FREQUENCY == 900
+#if LORA_FREQUENCY_MODE == 900
   #define FREQUENCY_900
   #define LORA_MAX_CHANNEL 69
-#elif LORA_FREQUENCY == 433
+#elif LORA_FREQUENCY_MODE == 433
   #define FREQUENCY_433
   #define LORA_MAX_CHANNEL 0
   #error "433Mhz Not implemented yet."
 #else
   #error "Invalid LoRa Frequency. Use 900 or 433 MHz."
+#endif
+
+#if (LORA_MANAGER_E32 && LORA_MANAGER_E22)
+  #error "Multiple LoRa Managers defined. Define only one of LORA_MANAGER_E32 or LORA_MANAGER_E22."
 #endif
 
 #if LORA_MANAGER_E32
@@ -40,9 +44,7 @@
 #include "src/lib/URDCore/URDCore.h"
 #include "src/lib/LoRaManager/LoRaManager.h"
 
-#if (LORA_MANAGER_E32 && LORA_MANAGER_E22)
-  #error "Multiple LoRa Managers defined. Define only one of LORA_MANAGER_E32 or LORA_MANAGER_E22."
-#endif
+
 // ----------------------- SERIAL ------------------------
 #define SERIAL_BAUD_RATE 115200
 
